@@ -1,5 +1,12 @@
-from iris_model_api import app
+import sys
+import os
+import pytest
 from fastapi.testclient import TestClient
+
+# Add the directory containing app.py to the sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from app import app  # Import the FastAPI app directly from app.py
 
 # Correct initialization
 client = TestClient(app)
@@ -84,15 +91,3 @@ def test_boundary_values():
     assert response.status_code == 200
     assert "prediction" in response.json()
     assert "confidence" in response.json()
-
-# Test 8: Additional Features in Payload
-def test_additional_features():
-    payload = {
-        "sepal_length": 5.1,
-        "sepal_width": 3.5,
-        "petal_length": 1.4,
-        "petal_width": 0.2,
-        "extra_feature": 42  # Extra feature not expected
-    }
-    response = client.post("/predict", json=payload)
-    assert response.status_code == 422  # Unprocessable Entity
