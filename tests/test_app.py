@@ -1,6 +1,7 @@
-from fastapi.testclient import TestClient
 from iris_model_api import app
+from fastapi.testclient import TestClient
 
+# Correct initialization
 client = TestClient(app)
 
 # Test 1: Health Check Endpoint
